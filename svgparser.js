@@ -6,6 +6,20 @@
  
  (function(root){
 	'use strict';
+
+	var isNode = !(typeof window !== 'undefined' && this === window);
+	var DOMParser
+	if (isNode){
+		const XmlDom = require('xmldom')
+		DOMParser = XmlDom.DOMParser
+		Object.prototype.firstElementChild = function(){
+			var n = this.firstChild;
+			while (n && (n.nodeType != n.ELEMENT_NODE)) {
+				n = n.nextSibling;
+			}
+			return n;
+		}
+	}
 	
 	function SvgParser(){
 		// the SVG document
@@ -699,5 +713,9 @@
 		clean: parser.cleanInput.bind(parser),
 		polygonify: parser.polygonify.bind(parser)
 	};
+
+	if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+		module.exports = root.SvgParser
+	}
 	
 }(this));

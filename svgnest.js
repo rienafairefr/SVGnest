@@ -4,6 +4,12 @@
  */
  
 (function(root){
+	var isCommonJS = typeof module !== 'undefined' && module.exports;
+	var isNode = !(typeof window !== 'undefined' && this === window);
+	if (isCommonJS) {
+		SvgParser = require('./svgparser')
+	}
+
 	'use strict';
 	
 	root.SvgNest = new SvgNest();
@@ -983,6 +989,13 @@
 		}
 		
 		return pop[0];
+	}
+	
+	if (isCommonJS) {
+		module.exports = {
+			SvgNest,
+			GeneticAlgorithm
+		};
 	}
 	
 })(this);

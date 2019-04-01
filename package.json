@@ -1,0 +1,23 @@
+{
+  "name": "svg-nest",
+  "version": "1.0.0",
+  "description": "Svg paths Nesting",
+  "main": "script.js",
+  "dependencies": {
+    "xmldom": "^0.1.27"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jack000/SVGnest.git"
+  },
+  "author": "Jack Qiao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jack000/SVGnest/issues"
+  },
+  "homepage": "https://github.com/Jack000/SVGnest#readme"
+}
