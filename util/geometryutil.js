@@ -585,6 +585,8 @@
 					var a2 = {x: A[i+1].x+Aoffsetx, y:A[i+1].y+Aoffsety};
 					var b1 = {x: B[j].x+Boffsetx, y: B[j].y+Boffsety};
 					var b2 = {x: B[j+1].x+Boffsetx, y: B[j+1].y+Boffsety};
+
+					console.log(JSON.stringify([a1, a2, b1, b2]))
 					
 					var prevbindex = (j == 0) ? B.length-1 : j-1;
 					var prevaindex = (i == 0) ? A.length-1 : i-1;
@@ -667,7 +669,7 @@
 					}
 										
 					var p = _lineIntersect(b1, b2, a1, a2);
-					
+					console.log('line_intersect ' + p)
 					if(p !== null){
 						return true;
 					}
@@ -1888,4 +1890,7 @@
 			return rotated;
 		}
 	};
+	if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') { 
+		module.exports = root.GeometryUtil 
+	  }
 }(this));

@@ -226,6 +226,8 @@
 					tree[i].reverse();
 				}
 			}
+
+			console.log(JSON.stringify(binPolygon))
 			
 			var self = this;
 			this.working = false;
@@ -298,6 +300,8 @@
 				ids.push(placelist[i].id);
 				placelist[i].rotation = rotations[i];
 			}
+
+			console.log(JSON.stringify(placelist))
 			
 			var nfpPairs = [];
 			var key;
@@ -328,6 +332,8 @@
 			nfpCache = newCache;
 			
 			var worker = new PlacementWorker(binPolygon, placelist.slice(0), ids, rotations, config, nfpCache);
+
+			//console.log(JSON.stringify(nfpPairs))
 			
 			var p = new Parallel(nfpPairs, {
 				env: {
@@ -361,6 +367,10 @@
 				var A = rotatePolygon(pair.A, pair.key.Arotation);
 				var B = rotatePolygon(pair.B, pair.key.Brotation);
 
+				
+				var closed = A[0] == A[-1]
+				console.log("closed " + closed)
+
 				var nfp;
 				
 				if(pair.key.inside){
@@ -392,12 +402,17 @@
 					else{
 						nfp = minkowskiDifference(A,B);
 					}
+
+					console.log('A = ' + JSON.stringify(A))
+					console.log('B = ' + JSON.stringify(B))
+					console.log('// nfp = ' + JSON.stringify(nfp))
+
 					// sanity check
 					if(!nfp || nfp.length == 0){
 						log('NFP Error: ', pair.key);
 						log('A: ',JSON.stringify(A));
 						log('B: ',JSON.stringify(B));
-						return null;
+						return {key: pair.key, value: null};
 					}
 					
 					for(var i=0; i<nfp.length; i++){
@@ -408,13 +423,13 @@
 								log('A: ',JSON.stringify(A));
 								log('B: ',JSON.stringify(B));
 								nfp.splice(i,1);
-								return null;
+								return {key: pair.key, value: null};
 							}
 						}
 					}
 					
 					if(nfp.length == 0){
-						return null;
+						return {key: pair.key, value: null};
 					}
 					
 					// for outer NFPs, the first is guaranteed to be the largest. Any subsequent NFPs that lie inside the first are holes
@@ -520,6 +535,7 @@
 				
 				return {key: pair.key, value: nfp};
 			}).then(function(generatedNfp){
+				//console.log(JSON.stringify(generatedNfp))
 				if(generatedNfp){
 					for(var i=0; i<generatedNfp.length; i++){
 						var Nfp = generatedNfp[i];
@@ -531,6 +547,7 @@
 						}
 					}
 				}
+				//console.log(JSON.stringify(nfpCache))
 				worker.nfpCache = nfpCache;
 				
 				// can't use .spawn because our data is an array
